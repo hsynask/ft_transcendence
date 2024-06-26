@@ -15,15 +15,19 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 
 WORKDIR /app
 
-COPY backend_src /app
+COPY . /app
 
 COPY ./conf/nginx.conf /etc/nginx/sites-available/default
 COPY ./conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN python3 -m venv venv
 RUN . venv/bin/activate && pip install --upgrade pip
-RUN . venv/bin/activate && pip install -r requirements.txt
+RUN . venv/bin/activate && pip install -r ./backend_src/requirements.txt
 
-ENTRYPOINT ["./sh_tools/nginx.sh"]
+# Ensure nginx.sh has executable permissions
+RUN chmod +x /app/sh_tools/nginx.sh
+
+# Use CMD instead of ENTRYPOINT to run the nginx.sh script
+ENTRYPOINT ["/bin/bash", "/app/sh_tools/nginx.sh"]
 
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

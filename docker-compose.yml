@@ -32,17 +32,20 @@ services:
     depends_on:
       - backend
   db:
-    container_name: db
-    networks:
-      - my_network
-    ports:
-      - "3306:3306"
-    build: ./srcs/db
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: cbolatdb
+      POSTGRES_USER: cbolat
+      POSTGRES_PASSWORD: 1111
     volumes:
-      - ./srcs/db:/var/lib/mysql
-    env_file:
-      - .env
-  
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
+
 networks:
   my_network:
     name: my_network

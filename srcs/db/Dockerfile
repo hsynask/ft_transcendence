@@ -7,6 +7,14 @@ FROM postgres:13
 # Expose the PostgreSQL port
 EXPOSE 5432
 
-ENTRYPOINT ["./tools/postgres.sh"]
+WORKDIR /app
+
+COPY ./tools/postgres.sh /app
+COPY ./conf/postgresql.conf /etc/postgresql/postgresql.conf
+
+RUN chmod +x /app/postgres.sh
+
+# Start the PostgreSQL server
+ENTRYPOINT ["/app/postgres.sh"]
 
 CMD ["postgres"]
