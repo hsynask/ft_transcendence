@@ -1,0 +1,33 @@
+# PostgreSQL configuration file
+# -----------------------------
+
+# Connection Settings
+listen_addresses = '*'          # What IP address(es) to listen on; use '*' for all
+port = 5432                     # Port number to listen on
+
+# Resource Usage (Memory)
+shared_buffers = 256MB          # Sets the amount of memory the database server uses for shared memory buffers
+work_mem = 64MB                 # Sets the amount of memory to be used by internal sort operations and hash tables before writing to temporary disk files
+
+# Resource Usage (Disk)
+maintenance_work_mem = 128MB    # Sets the maximum amount of memory to be used for maintenance operations
+
+# Write-Ahead Log (WAL)
+wal_level = replica             # Set the level of information written to the WAL
+checkpoint_timeout = 10min      # Sets the maximum time between automatic WAL checkpoints
+checkpoint_completion_target = 0.7  # Sets the target of completion of the checkpoint process
+
+# Query Tuning
+effective_cache_size = 1GB      # Sets the planner's assumption about the size of the disk cache
+
+# Logging
+logging_collector = on          # Enable capturing of stderr and csvlog
+log_directory = 'pg_log'        # Directory where log files are written
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'  # Log file name pattern
+log_statement = 'all'           # Log all statements
+log_min_duration_statement = 1000  # Log statements that take more than 1000ms to execute
+
+# Other Settings
+timezone = 'UTC'                # Sets the time zone for displaying and interpreting time stamps
+datestyle = 'iso, mdy'          # Sets the display format for date and time values
+max_connections = 100           # Sets the maximum number of concurrent connections

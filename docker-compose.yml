@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build: "./srcs/backend"
+    networks:
+      - my_network
+    ports:
+      - "800:443"
+    volumes:
+      - ./srcs/backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+  frontend:
+    container_name: frontend
+    build: ./srcs/frontend
+    networks:
+      - my_network
+    ports:
+      - "3000:443"
+    volumes:
+      - ./srcs/frontend:/app
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    restart: unless-stopped
+    depends_on:
+      - backend
+  db:
+    container_name: db
+    networks:
+      - my_network
+    ports:
+      - "3306:3306"
+    build: ./srcs/db
+    volumes:
+      - ./srcs/db:/var/lib/mysql
+    env_file:
+      - .env
+  
+networks:
+  my_network:
+    name: my_network
+    driver: bridge
+    
